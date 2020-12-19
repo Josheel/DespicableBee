@@ -37,7 +37,7 @@ public class ApiariesActivity extends AppCompatActivity {
     RecyclerView apiariesListRV;
     private DatabaseReference database;
     private FirebaseAuth firebaseAuth;
-    final private ArrayList<Apiary> apiaries = new ArrayList<>();
+    final ArrayList<Apiary> apiaries = new ArrayList<>();
     private Context c;
     String uid,location,name,notes;
 
@@ -45,7 +45,6 @@ public class ApiariesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apiaries);
-        getApiaries();
 
         newApiaryBTN = findViewById(R.id.newApiaryBTN2);
         newApiaryBTN.setOnClickListener(new View.OnClickListener(){
@@ -61,14 +60,12 @@ public class ApiariesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        //setupAdapter();
+        getApiaries();
     }
 
 
 
     public void setupAdapter(){
-        getApiaries();
         ApiaryAdapter apiaryAdapter = new ApiaryAdapter(apiaries);
         apiariesListRV = (RecyclerView) findViewById(R.id.apiariesListRV);
         apiariesListRV.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -90,15 +87,12 @@ public class ApiariesActivity extends AppCompatActivity {
                     Apiary p = new Apiary(name,location,notes);
                     apiaries.add(p);
                 }
+                setupAdapter();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        int i = 0;
-        for(Apiary pee: apiaries) {
-            Toast.makeText(getApplicationContext(), pee.getLocationName(), Toast.LENGTH_SHORT).show();
-        }
 
     }
 

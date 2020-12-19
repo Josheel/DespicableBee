@@ -46,7 +46,6 @@ public class MainMenu extends AppCompatActivity {
         hivesButton = findViewById(R.id.button3);
         inspectionButton = findViewById(R.id.button4);
 
-        getApiaries();
         apiariesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +59,6 @@ public class MainMenu extends AppCompatActivity {
                     intent = new Intent(getApplicationContext(), NoApiariesActivity.class);
                 }
                 startActivity(intent);
-
             }
         });
 
@@ -75,11 +73,8 @@ public class MainMenu extends AppCompatActivity {
         inspectionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ApiariesActivity.class);
+                getApiaries();
 
-//                getApiaries();
-//                for(String str: apiariesList)
-//                    Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT);//getApiaryData(str);
             }
         });
     }
@@ -87,12 +82,12 @@ public class MainMenu extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        getApiaries();
     }
 
     private void getApiaries(){
         uid = firebaseAuth.getCurrentUser().getUid();
-
+        Toast.makeText(getApplicationContext(), "get apiaries", Toast.LENGTH_SHORT);//getApiaryData(str);
         database = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Apiaries");;
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,8 +96,7 @@ public class MainMenu extends AppCompatActivity {
                 for(DataSnapshot snapshot1: datasnapshot.getChildren()){
                     apiariesList.add(snapshot1.getKey());
                 }
-                for(String str: apiariesList)
-                    Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT);//getApiaryData(str);
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

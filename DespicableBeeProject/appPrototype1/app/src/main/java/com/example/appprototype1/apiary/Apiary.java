@@ -28,9 +28,5 @@ public class Apiary {
     public String getLocationName(){
         return location;
     }
-    public void setApiaryName(String apiaryName,String location, String notes){
-        this.apiaryName = apiaryName;
-        this.location = location;
-        this.notes = notes;
-    }
+
 }
