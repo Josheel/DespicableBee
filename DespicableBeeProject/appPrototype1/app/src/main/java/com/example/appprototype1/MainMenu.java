@@ -66,7 +66,10 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), NoHiveActivity.class);
-                startActivity(intent);
+                getApiariesToHive(intent);
+//                for(String str: apiariesList)
+//                    Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -78,6 +81,7 @@ public class MainMenu extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onStart() {
@@ -97,6 +101,26 @@ public class MainMenu extends AppCompatActivity {
                     apiariesList.add(snapshot1.getKey());
                 }
 
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    private void getApiariesToHive(final Intent intent){
+        uid = firebaseAuth.getCurrentUser().getUid();
+        Toast.makeText(getApplicationContext(), "get apiaries", Toast.LENGTH_SHORT);//getApiaryData(str);
+        database = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Apiaries");;
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                apiariesList.clear();
+                for(DataSnapshot snapshot1: datasnapshot.getChildren()){
+                    apiariesList.add(snapshot1.getKey());
+                }
+                intent.putExtra("apiaryList",apiariesList);
+                startActivity(intent);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
