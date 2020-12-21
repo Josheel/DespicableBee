@@ -7,27 +7,35 @@
     android:background="@drawable/gradient"
     tools:context=".hive.HiveDetailsActivity">
 
-    <ImageButton
-        android:id="@+id/newHiveBTN1"
-        android:layout_width="108dp"
-        android:layout_height="108dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginBottom="44dp"
-        android:background="@drawable/roundbutton"
-        android:backgroundTint="#65CB8617"
-        android:tint="#CB8617"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apiariesListRV"
-        app:srcCompat="@drawable/addmedium" />
-    <ListView
-        android:id="@+id/hiveListDetails"
-        android:layout_width="match_parent"
-        android:layout_height="550dp"
+
+    <TextView
+        android:id="@+id/hiveDetailsHiveName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/hiveDetailsSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/hiveDetailsSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/hiveDetailsType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/hiveDetailsType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="196dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

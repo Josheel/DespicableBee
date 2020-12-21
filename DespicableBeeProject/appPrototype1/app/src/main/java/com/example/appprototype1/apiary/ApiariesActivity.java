@@ -1,27 +1,16 @@
 package com.example.appprototype1.apiary;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import com.example.appprototype1.R;
+import com.example.appprototype1.hive.HivesActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,16 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ApiariesActivity extends AppCompatActivity {
+public class ApiariesActivity extends AppCompatActivity implements ApiaryAdapter.OnNoteListener {
     ImageButton newApiaryBTN;
     RecyclerView apiariesListRV;
     private DatabaseReference database;
     private FirebaseAuth firebaseAuth;
     final ArrayList<Apiary> apiaries = new ArrayList<>();
-    private Context c;
     String uid,location,name,notes;
 
     @Override
@@ -63,10 +50,8 @@ public class ApiariesActivity extends AppCompatActivity {
         getApiaries();
     }
 
-
-
     public void setupAdapter(){
-        ApiaryAdapter apiaryAdapter = new ApiaryAdapter(apiaries);
+        ApiaryAdapter apiaryAdapter = new ApiaryAdapter(apiaries,this);
         apiariesListRV = (RecyclerView) findViewById(R.id.apiariesListRV);
         apiariesListRV.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         apiariesListRV.setAdapter(apiaryAdapter);
@@ -80,6 +65,7 @@ public class ApiariesActivity extends AppCompatActivity {
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                apiaries.clear();
                 for(DataSnapshot snapshot1: datasnapshot.getChildren()){
                     name = snapshot1.child("apiaryName").getValue().toString();
                     location = snapshot1.child("locationName").getValue().toString();
@@ -96,5 +82,12 @@ public class ApiariesActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onNoteClick(int position) {
+        Intent intent = new Intent(this, HivesActivity.class);
+        intent.putExtra("name",apiaries.get(position).getApiaryName());
+        intent.putExtra("location",apiaries.get(position).getLocationName());
+        intent.putExtra("notes",apiaries.get(position).getNotesName());
+        startActivity(intent);
+    }
 }

@@ -1,27 +1,24 @@
 package com.example.appprototype1.apiary;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.appprototype1.R;
 
-import org.w3c.dom.Text;
-
-public class ApiaryViewHolder extends RecyclerView.ViewHolder {
+public class ApiaryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     TextView apiaryNameTV;
-    TextView locationNameTV;
-    TextView notesTV;
+    ApiaryAdapter.OnNoteListener onNoteListener;
 
-    public ApiaryViewHolder(View view){
+    public ApiaryViewHolder(@NonNull View view, ApiaryAdapter.OnNoteListener onNoteListener){
         super(view);
         apiaryNameTV = (TextView) view.findViewById(R.id.apairyNameTV);
-        locationNameTV = (TextView) view.findViewById(R.id.locationNameTV);
-        notesTV = (TextView) view.findViewById(R.id.notesTV);
+        this.onNoteListener = onNoteListener;
+        view.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        onNoteListener.onNoteClick(getAdapterPosition());
+    }
 }

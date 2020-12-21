@@ -47,9 +47,11 @@ public class NewHiveActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
     EditText newHiveET;
+    Bundle bundle;
 
     String uid;
     String[] apiariesList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class NewHiveActivity extends AppCompatActivity {
         initialize();;
         initializeAdapters();
         setOnClickListeners();
+        getApiaries();
     }
 
     private void addHive(){
@@ -79,17 +82,27 @@ public class NewHiveActivity extends AppCompatActivity {
 
 
     private void getApiaries() {
-        Bundle bundle = getIntent().getExtras();
-        ArrayList<String> list = bundle.getStringArrayList("apiariesList");
-        for(String str: list)
-            Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();
+        ArrayList<String> list = bundle.getStringArrayList("apiary");
+        int i = 0;
+        if(list.isEmpty())
+        {
+            apiariesList = new String[]{"No Apiares"};
+            return;
+        }
+        apiariesList = new String[list.size()];
+        for(String str: list) {
+            Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+            apiariesList[i] = str;
+            i++;
+        }
+
     }
 
-    private String[] initializeApiariesList(String[] apiaryList){
-        return apiaryList;
-    }
 
     private void initialize(){
+        bundle = getIntent().getExtras();
+        getApiaries();
+
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("Apiaries");
 
@@ -105,15 +118,13 @@ public class NewHiveActivity extends AppCompatActivity {
 
 
     private void initializeAdapters(){
-        //getApiaries();
-
         String[] items = new String[]{"4 frames", "5 frames", "8 frames", "10 frames"};
         String[] items2 = new String[]{"Extract", "From", "Database"};
         String[] items3 = new String[]{"Builder","Honey Production","Mating Nuc", "Mother Hive", "Nucleus", "Starter"};
         String[] item4 = new String[]{"White","Yellow","Red","Green","Blue"};
 
         adapter = new ArrayAdapter<>(this, R.layout.list_dropdown, items);
-        adapter2 = new ArrayAdapter<>(this, R.layout.list_dropdown, items2);
+        adapter2 = new ArrayAdapter<>(this, R.layout.list_dropdown, apiariesList);
         adapter3 = new ArrayAdapter<>(this, R.layout.list_dropdown, items3);
         adapter4 = new ArrayAdapter<>(this, R.layout.list_dropdown,item4);
 
@@ -121,6 +132,7 @@ public class NewHiveActivity extends AppCompatActivity {
         apiaryName.setAdapter(adapter2);
         type.setAdapter(adapter3);
         dropdown4.setAdapter(adapter4);
+
     }
 
     private void setOnClickListeners(){

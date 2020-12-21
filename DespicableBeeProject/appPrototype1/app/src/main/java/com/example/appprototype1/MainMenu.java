@@ -2,6 +2,7 @@ package com.example.appprototype1;
 
 import com.example.appprototype1.apiary.ApiariesActivity;
 import com.example.appprototype1.apiary.NoApiariesActivity;
+import com.example.appprototype1.hive.NewHiveActivity;
 import com.example.appprototype1.hive.NoHiveActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,10 +66,10 @@ public class MainMenu extends AppCompatActivity {
         hivesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), NoHiveActivity.class);
-                getApiariesToHive(intent);
-//                for(String str: apiariesList)
-//                    Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(v.getContext(), NewHiveActivity.class);
+//                getApiariesToHive(intent);
+                intent.putExtra("apiary",apiariesList);
+                startActivity(intent);
 
             }
         });
@@ -108,25 +109,7 @@ public class MainMenu extends AppCompatActivity {
         });
     }
 
-    private void getApiariesToHive(final Intent intent){
-        uid = firebaseAuth.getCurrentUser().getUid();
-        Toast.makeText(getApplicationContext(), "get apiaries", Toast.LENGTH_SHORT);//getApiaryData(str);
-        database = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Apiaries");;
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                apiariesList.clear();
-                for(DataSnapshot snapshot1: datasnapshot.getChildren()){
-                    apiariesList.add(snapshot1.getKey());
-                }
-                intent.putExtra("apiaryList",apiariesList);
-                startActivity(intent);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
+
 
 //    private void getApiaryData(String apiary){
 //        firebaseAuth = FirebaseAuth.getInstance();
